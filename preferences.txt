@@ -1,0 +1,7 @@
+{'requirement': 'Line chart', 'variable 0': 'BatchNo', 'variable 1': 'CornWeight'}
+{'requirement': 'Line chart', 'variable 0': 'BatchNo', 'variable 1': 'RiceWeight'}
+{'requirement': 'Line chart', 'variable 0': 'BatchNo', 'variable 1': 'SoyaWeight'}
+{'requirement': 'Line chart', 'variable 0': 'BatchNo', 'variable 1': 'GGWeight'}
+{'requirement': 'Line chart', 'variable 0': 'BatchNo', 'variable 1': 'KKWeight'}
+{'requirement': 'Table', 'variable 0': 'BatchNo', 'variable 1': 'CornWeight', 'variable 2': 'RiceWeight', 'variable 3': 'SoyaWeight', 'variable 4': 'GGWeight', 'variable 5': 'KKWeight', 'variable 6': 'TotalBatchWeight'}
+{'requirement': 'Pie chart', 'variable 0': 'CornWeight', 'variable 1': 'RiceWeight', 'variable 2': 'SoyaWeight', 'variable 3': 'GGWeight', 'variable 4': 'GGWeight', 'variable 5': 'KKWeight', 'variable 6': 'TotalBatchWeight'}

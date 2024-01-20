@@ -31,38 +31,44 @@ def get_excel_file_details(file_path):
         return None, 'File not found. Please check the file path.'
     
 def readtxt():
-    result = []  # Initialize an empty list to store the lines
-
+    global preferences
+    
+    result = []
+    
     try:
         with open('preferences.txt', 'r') as file:
-            # Read each line in the file and add it to the list
             for line in file:
                 result.append(line.strip())
+                
     except FileNotFoundError:
         print("Error: File 'preferences.txt' not found.")
+        
     except Exception as e:
         print(f"An error occurred: {e}")
-
+        
     return result
 
 
-def writeTotxt(inputFromUser):
+def writeTotxt(inputFromUser, path = txt_path):
     try:
         data = str(inputFromUser)
 
-        with open('preferences.txt', 'a') as file:
+        with open(path, 'a') as file:
             file.write(data + '\n')  # Adding a newline character for better formatting
 
         print("Data written to 'preferences.txt' successfully.")
+        
     except Exception as e:
         print(f"An error occurred: {e}")
 
-def clearTxtFile():
+def clearTxtFile(path = txt_path):
     try:
-        with open('preferences.txt', 'w') as file:
+        with open(path, 'w') as file:
             # This will open the file in write mode and truncate its content, effectively clearing it
             pass  # The 'pass' statement does nothing; it's a placeholder to satisfy the syntax
 
-        print("File 'preferences.txt' has been cleared.")
+        print(f"File {path} has been cleared.")
+        
     except Exception as e:
         print(f"An error occurred: {e}")
+

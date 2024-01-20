@@ -5,12 +5,13 @@ from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
 from PyQt5.QtWidgets import QMessageBox
-from DataAnalyzer import *
+from dataAnalyzer import *
 
 class Home_page(QMainWindow):
     def __init__(self):
         super(Home_page, self).__init__()
         loadUi("app.ui", self)
+        self.textTodetails = None
         self.Selected_itemToadd = ''
         self.Selected_itemToremove = ''
         self.variable_list = {}
@@ -24,10 +25,15 @@ class Home_page(QMainWindow):
         self.B_addTolist.clicked.connect(self.addItem)
         self.B_removeFromlist.clicked.connect(self.removeItem)
         
+        self.clearDetails()
+    
+    def clearDetails(self):
+        clearTxtFile(path = "detail.txt")
+        
     
     def clearpreferences(self):
-            clearTxtFile()
-            self.list_Req.clear()
+        clearTxtFile()
+        self.list_Req.clear()
             
       
     def load_preferences(self):
@@ -42,10 +48,15 @@ class Home_page(QMainWindow):
         file_path = fname
         file_name = os.path.basename(file_path)
         
-        if file_name:       
+        if file_name:
+            self.textTodetails = f"File Name: {file_name}"
+            writeTotxt(self.textTodetails, 'detail.txt')
+                   
             creation_time = os.path.getctime(file_path)
             creation_date = datetime.fromtimestamp(creation_time).strftime('%Y-%m-%d %H:%M:%S')
             print(f"File Name: {file_name}\nCreation Date: {creation_date}")
+            self.textTodetails = f"Date & Time (created): {creation_date}"
+            writeTotxt(self.textTodetails, 'detail.txt')
 
             self.Dir.setText(file_name)
             self.Dir_date.setText(creation_date)
