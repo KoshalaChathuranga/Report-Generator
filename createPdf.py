@@ -1,3 +1,5 @@
+import os
+import time
 import pandas as pd
 from fpdf import FPDF
 import plotly.express as px
@@ -59,16 +61,16 @@ class CreatePDF:
     def process_table(self, df, variables_df):
         if variables_df:
             try:
-                selected_df = df[variables_df]  # No need to use pd.read_excel again, just select the columns
+                selected_df = df[variables_df]  
             except Exception as e:
                 print(f"An error occurred: {e}")
                 return
 
         if selected_df is not None:
             selected_df = selected_df.applymap(str)
-            columns = [list(selected_df)]  # Get list of dataframe columns
-            rows = selected_df.values.tolist()  # Get list of dataframe rows
-            data = columns + rows  # Combine columns and rows in one list
+            columns = [list(selected_df)]  
+            rows = selected_df.values.tolist() 
+            data = columns + rows 
             
             self.pdf.add_page()
             self.pdf.set_font("Times", size=10)
@@ -98,19 +100,60 @@ class CreatePDF:
 
 
     def process_pie_chart(self, df, variables_df):
-        # Your logic for processing Pie chart
         print("Processing Pie chart with variables:")
         print(variables_df)
 
 
     def process_line_chart(self, df, variables_df):
-        # Your logic for processing Line chart
-        print("Processing Line chart with variables:")
+        if variables_df:
+            try:
+                selected_df = df[variables_df]
+            except Exception as e:
+                print(f"An error occurred: {e}")
+                return
+        else:
+            print("No variables specified for Line chart.")
+            return
+
+        # Assuming the first column is x-axis and the rest are y-axis
+        x_axis = selected_df.columns[0]
+        y_axes = selected_df.columns[1:]
+
+        # Create line chart using Plotly Express
+        fig = px.line(selected_df, x=x_axis, y=y_axes, title="Line Chart")
+
+        # Save the plot to an image file
+        image_file_path = "line_chart.png"
+        fig.write_image(image_file_path)
+
+        # Wait until the file is accessible (fully created)
+        while True:
+            try:
+                with open(image_file_path, 'rb'):
+                    break
+            except PermissionError:
+                time.sleep(0.1)
+
+        # Convert the image to PDF and add it to the existing PDF
+        image = Image.open(image_file_path)
+        image_width, image_height = image.size
+        aspect_ratio = image_width / float(image_height)
+
+        # Assuming A4 page size
+        pdf_width = 210
+        pdf_height = pdf_width / aspect_ratio
+
+        self.pdf.add_page()
+        self.pdf.image(image_file_path, x=10, y=10, w=pdf_width - 20, h=pdf_height - 20)
+
+        # Remove the temporary image file
+        os.remove(image_file_path)
+
+        print("Processed Line chart with variables:")
         print(variables_df)
 
 
     def process_scatter_plot(self, df, variables_df):
-        # Your logic for processing Scatter plot
         print("Processing Scatter plot with variables:")
         print(variables_df)
     

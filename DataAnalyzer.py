@@ -54,7 +54,7 @@ def writeTotxt(inputFromUser, path = txt_path):
         data = str(inputFromUser)
 
         with open(path, 'a') as file:
-            file.write(data + '\n')  # Adding a newline character for better formatting
+            file.write(data + '\n')  
 
         print("Data written to 'preferences.txt' successfully.")
         
@@ -64,7 +64,6 @@ def writeTotxt(inputFromUser, path = txt_path):
 def clearTxtFile(path = txt_path):
     try:
         with open(path, 'w') as file:
-            # This will open the file in write mode and truncate its content, effectively clearing it
             pass  # The 'pass' statement does nothing; it's a placeholder to satisfy the syntax
 
         print(f"File {path} has been cleared.")
