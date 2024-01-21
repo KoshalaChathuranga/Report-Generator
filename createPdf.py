@@ -1,10 +1,12 @@
 import os
-import time
+import numpy as np
 import pandas as pd
 from fpdf import FPDF
-import plotly.express as px
 from PIL import Image
+import io 
 from io import BytesIO
+import plotly.express as px
+import plotly.graph_objects as go
 
 
 class CreatePDF:
@@ -100,6 +102,7 @@ class CreatePDF:
 
 
     def process_pie_chart(self, df, variables_df):
+        # Your logic for processing Pie chart
         print("Processing Pie chart with variables:")
         print(variables_df)
 
@@ -122,38 +125,19 @@ class CreatePDF:
         # Create line chart using Plotly Express
         fig = px.line(selected_df, x=x_axis, y=y_axes, title="Line Chart")
 
-        # Save the plot to an image file
-        image_file_path = "line_chart.png"
-        fig.write_image(image_file_path)
-
-        # Wait until the file is accessible (fully created)
-        while True:
-            try:
-                with open(image_file_path, 'rb'):
-                    break
-            except PermissionError:
-                time.sleep(0.1)
-
-        # Convert the image to PDF and add it to the existing PDF
-        image = Image.open(image_file_path)
-        image_width, image_height = image.size
-        aspect_ratio = image_width / float(image_height)
-
-        # Assuming A4 page size
-        pdf_width = 210
-        pdf_height = pdf_width / aspect_ratio
+        image_data = fig.to_image(format="png", engine="kaleido")
+        image = BytesIO(image_data)
 
         self.pdf.add_page()
-        self.pdf.image(image_file_path, x=10, y=10, w=pdf_width - 20, h=pdf_height - 20)
-
-        # Remove the temporary image file
-        os.remove(image_file_path)
+        self.pdf.image(image)
 
         print("Processed Line chart with variables:")
         print(variables_df)
 
 
+
     def process_scatter_plot(self, df, variables_df):
+        # Your logic for processing Scatter plot
         print("Processing Scatter plot with variables:")
         print(variables_df)
     
