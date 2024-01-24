@@ -3,6 +3,7 @@ import sys
 from datetime import datetime
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import QDateTime
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
 from PyQt5.QtWidgets import QMessageBox
 from dataAnalyzer import *
@@ -11,21 +12,44 @@ class Home_page(QMainWindow):
     def __init__(self):
         super(Home_page, self).__init__()
         loadUi("app.ui", self)
+        self.datetime_checked = False
         self.textTodetails = None
         self.Selected_itemToadd = ''
         self.Selected_itemToremove = ''
         self.variable_list = {}
+        self.dateTime_From.setDateTime(QDateTime.currentDateTime())
+        self.dateTime_To.setDateTime(QDateTime.currentDateTime())
         
         self.B_add.clicked.connect(self.addRequirement)
         self.B_clear.clicked.connect(self.clearList)
         self.search_B.clicked.connect(self.browsefiles)
         self.B_clearAll.clicked.connect(self.clearpreferences)
         
+        self.check_DatenTime.stateChanged.connect(self.addDataTime)
+        self.dateTime_From.dateTimeChanged.connect(self.dateTime_From_changed)
+        self.dateTime_To.dateTimeChanged.connect(self.dateTime_To_changed)
         
+
         self.B_addTolist.clicked.connect(self.addItem)
         self.B_removeFromlist.clicked.connect(self.removeItem)
         
         self.clearDetails()
+    
+    def dateTime_From_changed(self, datetime):
+        selected_Fromdate = datetime.date()
+        selected_Fromtime = datetime.time()
+        
+        self.from_date = selected_Fromdate.toString("dd-MM-yyyy")
+        self.from_time = selected_Fromtime.toString("hh:mm:ss")
+        #print((f"Selected From_Date: {self.from_date},\nSelected From_Time: {self.from_time}\n"))
+        
+    def dateTime_To_changed(self, datetime):
+        selected_Todate = datetime.date()
+        selected_Totime = datetime.time()
+        
+        self.To_date = selected_Todate.toString("dd-MM-yyyy")
+        self.To_time = selected_Totime.toString("hh:mm:ss")
+        #print((f"Selected To_Date: {self.To_date},\nSelected To_Time: {self.To_time}\n"))
     
     def clearDetails(self):
         clearTxtFile(path = "detail.txt")
@@ -66,7 +90,6 @@ class Home_page(QMainWindow):
             
             self.list_ToSelect.itemClicked.connect(self.itemToadd)
             self.list_Selected.itemClicked.connect(self.itemToremove)
-    
     
     def DisplayDetails(self, file_path):
         try:
@@ -126,6 +149,12 @@ class Home_page(QMainWindow):
         requirement = self.comboBox_Req.currentText()
         self.variable_list["requirement"] = requirement
         
+        if self.datetime_checked:
+            self.variable_list["From_Date"] = self.from_date
+            self.variable_list["From_Time"] = self.from_time
+            self.variable_list["To_Date"] = self.To_date
+            self.variable_list["To_Date"] = self.To_date
+
         for index in range(self.list_Selected.count()): 
             item = self.list_Selected.item(index)            
             key = f"variable {index}"
@@ -134,9 +163,15 @@ class Home_page(QMainWindow):
         
         writeTotxt(self.variable_list)
         self.list_Req.addItem(str( self.variable_list))
-        
-                   
-             
+    
+    def addDataTime(self, state):
+        if state == 2:
+            self.datetime_checked = True
+        else: 
+            self.datetime_checked = False
+                    
+                    
+                              
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     home = Home_page()
