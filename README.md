@@ -2,6 +2,10 @@
 FYI - not finished yet.
 ## Overview
 
+<p align="center">
+  <img width="800" height="600" src="https://drive.google.com/uc?id=1uLAwmgS2VVaweafVW2IfjfH1C-HWCjjo" alt="Report Generator">
+</p>
+
 The **Report Generator Project** is a Python application designed to streamline the process of generating reports from Excel files. This project leverages the PyQt5 library for an intuitive graphical user interface, pandas for efficient data manipulation, FPDF for PDF generation, and Plotly for dynamic chart creation.
 
 ## Key Features
