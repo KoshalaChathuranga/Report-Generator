@@ -7,6 +7,7 @@ import io
 from io import BytesIO
 import plotly.express as px
 import plotly.graph_objects as go
+import matplotlib.pyplot as plt
 
 
 class CreatePDF:
@@ -102,7 +103,33 @@ class CreatePDF:
 
 
     def process_pie_chart(self, df, variables_df):
-        # Your logic for processing Pie chart
+        if variables_df:
+            try:
+                selected_df = df[variables_df]
+                column_sums = selected_df.sum(axis=0)  # axis=0 for column-wise sum
+                print("Sum of each column in selected_df:")
+                print(column_sums)
+                
+                # Calculate percentages relative to the first column
+                percentages = (column_sums / column_sums.iloc[0]) * 100
+
+                # Plot the pie chart
+                fig = px.pie(names=percentages.index[1:], values=percentages.iloc[1:])
+                fig.update_layout(title="Total ingredient as a presentage")
+               
+                image_data = fig.to_image(format="png", engine="kaleido")
+                image = BytesIO(image_data)
+
+                self.pdf.add_page()
+                self.pdf.image(image)
+                                
+            except Exception as e:
+                print(f"An error occurred: {e}")
+                return
+        else:
+            print("No variables specified for Line chart.")
+            return
+      
         print("Processing Pie chart with variables:")
         print(variables_df)
 
@@ -133,7 +160,6 @@ class CreatePDF:
 
         print("Processed Line chart with variables:")
         print(variables_df)
-
 
 
     def process_scatter_plot(self, df, variables_df):

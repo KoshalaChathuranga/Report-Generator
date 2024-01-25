@@ -1,1 +1,4 @@
-{'requirement': 'Table', 'From_Date': '23-01-2024', 'From_Time': '00:00:38', 'To_Date': '24-01-2024', 'variable 0': 'BatchNo', 'variable 1': 'CornWeight'}
+{'requirement': 'Table', 'variable 0': 'BatchNo', 'variable 1': 'CornWeight', 'variable 2': 'RiceWeight', 'variable 3': 'SoyaWeight', 'variable 4': 'GGWeight'}
+{'requirement': 'Line chart', 'variable 0': 'BatchNo', 'variable 1': 'CornWeight'}
+{'requirement': 'Line chart', 'variable 0': 'BatchNo', 'variable 1': 'RiceWeight'}
+{'requirement': 'Pie chart', 'variable 0': 'TotalBatchWeight', 'variable 1': 'CornWeight', 'variable 2': 'RiceWeight', 'variable 3': 'SoyaWeight', 'variable 4': 'GGWeight'}
